@@ -28,7 +28,9 @@ with open(args["csv_file"]) as cvs_file:
         devices[row[0]]["i_id"] = myCGX.getImageByName(row[1])
 
     # loop through states
+    seconds = 0
     while True:
+        print("--- Timer {0} seconds".format(seconds))
         done = True
         for serial, device in devices.items():
             if device["state"] == "start":
@@ -153,4 +155,5 @@ with open(args["csv_file"]) as cvs_file:
         time.sleep(10)
         if done:
             break
+        seconds += 10
 
