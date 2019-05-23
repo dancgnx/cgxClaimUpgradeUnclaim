@@ -49,6 +49,7 @@ with open(args["csv_file"]) as cvs_file:
                 if machine["connected"]:
                     print("Machine {serial} is online".format(serial=serial))
                     if machine["machine_state"] == "claimed":
+                        device["e_id"] = machine["em_element_id"]
                         print("Machine {serial} is claimed".format(
                             serial=serial))
                         device["state"] = "claimed"
@@ -132,7 +133,10 @@ with open(args["csv_file"]) as cvs_file:
                         serial=serial))
                 else:
                     print("{serial} is upgraded".format(serial=serial))
-                    device["state"] = "unclaim"
+                    if args["noUnclaim"] :
+                        device["state"] = "done"
+                    else:
+                        device["state"] = "unclaim"
             elif device["state"] == "unclaim":
                 done = False
                 print("Unclaiming {serial}".format(serial=serial))
@@ -152,6 +156,8 @@ with open(args["csv_file"]) as cvs_file:
                 else:
                     print("{serial} is waiting to become online after unclaim".format(serial=serial))
                     done = False
+            elif device["state"] == "done":
+                print("{serial} is ready".format(serial=serial))
         time.sleep(10)
         if done:
             break

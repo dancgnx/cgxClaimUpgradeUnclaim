@@ -7,6 +7,7 @@ Instructions:
 * Setup authentication as listed below
 * Create a csv file with the example at devicelist.csv
 * run the script using: python3 cgxClaimUpgradeUnclaim.py --csv CSV_FILENAME 
+* If you don't wish to un-claim the device after an updrage, you can is the --no-unclaim flag
 
 cgxClaimUpgradeUnclaim.py looks for the following for AUTH, in this order of precedence:
 
