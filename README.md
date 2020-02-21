@@ -1,4 +1,4 @@
-#Upgrade CGX devices in bulk.
+# Upgrade CGX devices in bulk.
 
 Instructions:
 
