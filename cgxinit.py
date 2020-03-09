@@ -119,7 +119,7 @@ def go():
     custom_group = parser.add_argument_group('custom_args', 'Upgrade')
     custom_group.add_argument("--csv", help="CVS file serial,target_image",required=True,
                               default=None, action="store",dest="csv_file")
-    custom_group.add_argument("--no-unclaim", help="Do not unclaim a device after the upgrade",
+    custom_group.add_argument("--no-unclaim",default=False, help="Do not unclaim a device after the upgrade",
                               action="store_true",dest="noUnclaim")
 
     ####

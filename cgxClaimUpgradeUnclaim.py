@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import cgxinit
 import cloudgenix
 import sys
@@ -107,7 +108,10 @@ with open(args["csv_file"]) as cvs_file:
                 state = state.cgx_content["items"][0]
                 if state["active_version"] == device["target"]:
                     print("No need to upgrade {serial}".format(serial=serial))
-                    device["state"] = "unclaim"
+                    if args["noUnclaim"] :
+                        device["state"] = "done"
+                    else:
+                        device["state"] = "unclaim"
                 else:
                     print("Upgrading {serial}".format(serial=serial))
                     state = cgx.get.state(element_id).cgx_content
@@ -143,7 +147,7 @@ with open(args["csv_file"]) as cvs_file:
                 data = {"action": "declaim", "parameters": None}
                 res = cgx.post.tenant_element_operations(device["e_id"], data)
                 if not res.cgx_status:
-                    ValueError("Unable to unclaim ION: %s", out.cgx_content)
+                    ValueError("Unable to unclaim ION: %s", res.cgx_content)
                 device["state"] = "waiting_after_unclaim"
             elif device["state"] == "waiting_after_unclaim":
                 machine = cgx.get.machines(machine_id=device["m_id"])
