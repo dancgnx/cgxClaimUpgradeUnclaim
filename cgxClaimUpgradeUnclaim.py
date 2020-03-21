@@ -103,7 +103,7 @@ with open(args["csv_file"]) as cvs_file:
                 element_id = device["e_id"]
                 state = cgx.get.software_status(element_id)
                 if not state.cgx_status:
-                    ValueError(
+                    raise ValueError(
                         "Can't Get software status for element %s: %s", element_id, state.cgx_content)
                 state = state.cgx_content["items"][0]
                 if state["active_version"] == device["target"]:
@@ -123,7 +123,7 @@ with open(args["csv_file"]) as cvs_file:
                     new_state['image_id'] = device["i_id"]
                     out = cgx.put.state(element_id, new_state)
                     if not out.cgx_status:
-                        ValueError("Unable to upgrade ION: %s", out.cgx_content)
+                        raise ValueError(f"Unable to upgrade ION {serial}: {out.cgx_content}")
                     device["state"] = "upgrading"
             elif device["state"] == "upgrading":
                 done = False
@@ -147,7 +147,7 @@ with open(args["csv_file"]) as cvs_file:
                 data = {"action": "declaim", "parameters": None}
                 res = cgx.post.tenant_element_operations(device["e_id"], data)
                 if not res.cgx_status:
-                    ValueError("Unable to unclaim ION: %s", res.cgx_content)
+                    raise ValueError("Unable to unclaim ION: %s", res.cgx_content)
                 device["state"] = "waiting_after_unclaim"
             elif device["state"] == "waiting_after_unclaim":
                 machine = cgx.get.machines(machine_id=device["m_id"])
